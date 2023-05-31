@@ -1,4 +1,7 @@
 import { useNavigate } from "react-router-dom"
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+
 
 function Profile() {
   const navigate = useNavigate()
@@ -6,7 +9,67 @@ function Profile() {
     e.preventDefault()
     navigate('/chat')
   }
+  const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjIyMkBtYWlsLnJ1IiwiaWQiOjE5LCJpYXQiOjE2ODQyMTU2NjR9.fPBYulD22RXNxKC89xLyzEYRdUAIR4BCGOAauJ1FhQw"
+  const [data, setData] = useState({
+      email: "",
+      password: "",
+      fio: ""
+    });
+    const [agent, setAgent] = useState([{
+      fio:"",
+      email:""
+    }])
+    const [fio, setFio] = useState('')
+
+  const handleChange = (e) => {
+      const value = e.target.value;
+      setData({
+        ...data,
+        [e.target.name]: value
+      });
+    };
+    
+    const CreateAgent = (e) => {
+      e.preventDefault();
+      const userData = {
+        email: data.email,
+        password: data.password,
+        fio:data.fio
+      };
+      axios.post('http://localhost:3000/users/createAgent', userData, {headers: {Authorization : `Bearer ${accessToken}`}})
+      .then(function (response) {
+          console.log(response.status, response.data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+      }
+
+    const GetMe = () => {
+      axios.get('http://localhost:3000/users/me', {headers: {Authorization : `Bearer ${accessToken}`}})
+      .then(function (response) {
+          console.log(response.status, response.data.fio);
+          setFio(response.data.fio)
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+      }
+
+      const GetAgents = () => {
+        axios.get('http://localhost:3000/users/agents', {headers: {Authorization : `Bearer ${accessToken}`}})
+      .then(function (response) {
+          console.log(response.status, response.data);
+          setAgent(response.data)
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+      }
+
+      GetMe()
   return (
+      
       <div className="d-flex flex-column flex-lg-row h-lg-full bg-surface-secondary">
         <link href="https://unpkg.com/@webpixels/css/dist/index.css" rel="stylesheet"></link>
       <nav className="navbar show navbar-vertical h-lg-screen navbar-expand-lg px-0 py-3 py-lg-0 navbar-light bg-light border-bottom border-bottom-lg-0 border-end-lg" id="navbarVertical">
@@ -15,7 +78,6 @@ function Profile() {
             <span className="navbar-toggler-icon"></span>
           </button>
           <a className="navbar-brand py-lg-5 mb-lg-5 px-lg-6 me-0" href="#">
-            <img src="https://preview.webpixels.io/web/img/logos/clever-primary.svg" alt="..."/>
           </a>
           <div className="navbar-user d-lg-none">
             <div className="dropdown">
@@ -40,8 +102,8 @@ function Profile() {
                 <div className="input-group input-group-sm">
                   <span className="input-group-text border-end-0 rounded-left-pill" id="basic-addon1">
                     <svg width="1em" height="1em" viewBox="0 0 16 16" className="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                      <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z" />
-                      <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z" />
+                      <path fillRule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z" />
+                      <path fillRule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z" />
                     </svg>
                   </span>
                   <input type="text" className="form-control border-left-0 ps-0 rounded-end-pill" placeholder="Search" aria-label="Username" aria-describedby="basic-addon1"/>
@@ -156,10 +218,10 @@ function Profile() {
                       <div>
                         <div className="d-flex align-items-center">
                           <a href="#" className="avatar avatar-lg bg-warning rounded-circle text-white">
-                            <img alt="..." src="https://images.unsplash.com/photo-1579463148228-138296ac3b98?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=256&h=256&q=80"/>
+                            <img alt="..." src="https://i2.wp.com/fnewshub.com/wp-content/uploads/2021/10/IMG_20211024_002834.jpg"/>
                           </a>
                           <div className="ms-4">
-                            <span className="h4 d-block mb-0">Julianne Moore</span>
+                            <span className="h4 d-block mb-0">{fio}</span>
                             <a href="#" className="text-sm font-semibold text-muted">View Profile</a>
                           </div>
                         </div>
@@ -171,106 +233,46 @@ function Profile() {
                   </div>
                 </div>
                 <div className="mb-5">
-                  <h5 className="mb-0">Contact Information</h5>
+                  <h5 className="mb-0">Добавить агента</h5>
                 </div>
                 <form className="mb-6">
                   <div className="row mb-5">
                     <div className="col-md-6">
                       <div className="">
-                        <label className="form-label" for="first_name">First name</label>
-                        <input type="text" className="form-control" id="first_name"/>
+                        <label className="form-label" >Email</label>
+                        <input type="text" className="form-control" name="email" id="email" value={data.email} onChange={handleChange}/>
                       </div>
                     </div>
                     <div className="col-md-6">
                       <div className="">
-                        <label className="form-label" for="last_name">Last name</label>
-                        <input type="text" className="form-control" id="last_name"/>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="row g-5">
-                    <div className="col-md-6">
-                      <div className="">
-                        <label className="form-label" for="email">Email</label>
-                        <input type="email" className="form-control" id="email"/>
+                        <label className="form-label" >Password</label>
+                        <input type="password" className="form-control" name="password" id="password" value={data.password} onChange={handleChange} />
                       </div>
                     </div>
                     <div className="col-md-6">
                       <div className="">
-                        <label className="form-label" for="phone_number">Phone number</label>
-                        <input type="tel" className="form-control" id="phone_number"/>
-                      </div>
-                    </div>
-                    <div className="col-12">
-                      <div className="">
-                        <label className="form-label" for="address">Address</label>
-                        <input type="text" className="form-control" id="address"/>
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="">
-                        <label className="form-label" for="city">City</label>
-                        <input type="text" className="form-control" id="city"/>
-                      </div>
-                    </div>
-                    <div className="col-md-4">
-                      <div className="">
-                        <label className="form-label" for="country">Country</label>
-                        <select className="form-select" id="country" placeholder="Your email" aria-label="Default select example">
-                          <option selected>Country</option>
-                          <option value="1">One</option>
-                          <option value="2">Two</option>
-                          <option value="3">Three</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div className="col-md-2">
-                      <div className="">
-                        <label className="form-label" for="zip">ZIP</label>
-                        <input type="tel" className="form-control" id="zip"/>
-                      </div>
-                    </div>
-                    <div className="col-12">
-                      <div className="form-check">
-                        <input className="form-check-input" type="checkbox" name="check_primary_address" id="check_primary_address"/>
-                        <label className="form-check-label" for="check_primary_address">
-                          Make this my default address
-                        </label>
+                        <label className="form-label" >ФИО</label>
+                        <input type="text" className="form-control" name="fio" id="fio" value={data.fio} onChange={handleChange} />
                       </div>
                     </div>
                   </div>
                   <div className="text-end">
                     <button type="button" className="btn btn-sm btn-neutral me-2">Cancel</button>
-                    <button type="submit" className="btn btn-sm btn-primary">Save</button>
+                    <button type="button" className="btn btn-sm btn-primary" onClick={CreateAgent}>Save</button>
+                    <button type="button" className="btn btn-sm btn-primary" onClick={GetAgents}>Show agents</button>
                   </div>
                 </form>
                 <hr className="my-10" />
                 <div className="row g-6">
                   <div className="col-md-6">
-                    <div className="card shadow border-0">
+                  {agent.map(a => (<div className="card shadow border-0">
                       <div className="card-body">
-                        <h5 className="mb-2">Public profile</h5>
-                        <p className="text-sm text-muted mb-6">
-                          Making your profile public means that anyone on the network will be able to find you.
+                        <h5 className="mb-2" key={a.fio}>{a.fio}</h5>
+                        <p className="text-sm text-muted mb-6" key={a.email}>
+                          {a.email}
                         </p>
-                        <div className="form-check form-switch">
-                          <input className="form-check-input" type="checkbox" id="flexSwitchCheckDefault" checked/>
-                        </div>
                       </div>
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="card shadow border-0">
-                      <div className="card-body">
-                        <h5 className="mb-2">Show my email</h5>
-                        <p className="text-sm text-muted mb-6">
-                          Showing your e-mail adresses means that anyone on the network will be able to find you.
-                        </p>
-                        <div className="form-check form-switch">
-                          <input className="form-check-input" type="checkbox" id="flexSwitchCheckDefault"/>
-                        </div>
-                      </div>
-                    </div>
+                      </div>))}
                   </div>
                   <div className="col-md-12">
                     <div className="card shadow border-0">

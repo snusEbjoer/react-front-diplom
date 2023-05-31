@@ -60,7 +60,7 @@ body{margin-top:20px;}
 
 .users-container {
     position: relative;
-    padding: 1rem 0;
+    padding: 10px;
     border-right: 1px solid #e6ecf3;
     height: 100%;
     display: -ms-flexbox;
@@ -78,6 +78,7 @@ body{margin-top:20px;}
 
 .users {
     padding: 0;
+    border-radius: 10px;
 }
 
 .users .person {
@@ -102,6 +103,7 @@ body{margin-top:20px;}
     background-image: -o-linear-gradient(right, #e9eff5, #ffffff);
     /* Opera 11.10+ */
     background-image: linear-gradient(right, #e9eff5, #ffffff);
+    border-radius: 10px;
 }
 
 .users .person.active-user {
@@ -222,7 +224,7 @@ body{margin-top:20px;}
     position: relative;
     padding: 1rem;
     height: 850px;
-    overflow: scroll;
+    overflow: auto;
 }
 
 .chat-container li.chat-left,
@@ -370,15 +372,29 @@ ul {
 }
 .card {
     border: 0;
-    background: #f4f5fb;
+    background:#F5F9FC;
+    opacity: 1;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     border-radius: 2px;
     margin-bottom: 2rem;
     box-shadow: none;
+    border-radius: 15px;
 }
 #jopa {
-    width: 90%;
+    width: 95%;
     position: absolute;
     bottom: 0;
+    border-radius: 10px;
+    display: flex;
+    padding: 10px;
+}
+#textarea {
+    border-radius: 15px;
+    margin-bottom: 20px;
+}
+#jopaButton {
+    margin-left: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
 }
