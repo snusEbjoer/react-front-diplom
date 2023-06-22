@@ -36,7 +36,7 @@ function Profile() {
         password: data.password,
         fio:data.fio
       };
-      axios.post('http://localhost:3000/users/createAgent', userData, {headers: {Authorization : `Bearer ${accessToken}`}})
+      axios.post('https://diplomchat.site/users/createAgent', userData, {headers: {Authorization : `Bearer ${accessToken}`}})
       .then(function (response) {
           console.log(response.status, response.data);
         })
@@ -46,7 +46,7 @@ function Profile() {
       }
 
     const GetMe = () => {
-      axios.get('http://localhost:3000/users/me', {headers: {Authorization : `Bearer ${accessToken}`}})
+      axios.get('https://diplomchat.site/users/me', {headers: {Authorization : `Bearer ${accessToken}`}})
       .then(function (response) {
           console.log(response.status, response.data.fio);
           setFio(response.data.fio)
@@ -57,7 +57,7 @@ function Profile() {
       }
 
       const GetAgents = () => {
-        axios.get('http://localhost:3000/users/agents', {headers: {Authorization : `Bearer ${accessToken}`}})
+        axios.get('https://diplomchat.site/users/agents', {headers: {Authorization : `Bearer ${accessToken}`}})
       .then(function (response) {
           console.log(response.status, response.data);
           setAgent(response.data)

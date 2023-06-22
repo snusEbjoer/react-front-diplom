@@ -28,7 +28,7 @@ function SignUp() {
           fio: data.fio,
           name: data.name
         };
-        axios.post('http://localhost:3000/auth/SignUp', userData)
+        axios.post('https://diplomchat.site/auth/SignUp', userData)
         .then(function (response) {
             console.log(response.status, response.data);
           })
