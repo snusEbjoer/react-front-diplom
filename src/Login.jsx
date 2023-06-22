@@ -26,7 +26,7 @@ function Login() {
           email: data.email,
           password: data.password
         };
-        axios.post('http://localhost:3000/auth/login', userData)
+        axios.post('https://diplomchat.site/auth/login', userData)
         .then(function (response) {
             console.log(response.status, response.data.access_token);
             navigate('/profile')
